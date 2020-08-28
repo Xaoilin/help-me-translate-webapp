@@ -34,7 +34,7 @@ class Home extends React.Component {
 
     }
 
-    async postData(url = 'http://localhost:8080/api/v1/translate/json/ar', data = {}) {
+    async postData(url, data) {
         // Default options are marked with *
         const response = await fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -69,7 +69,7 @@ class Home extends React.Component {
             console.log("targetLanguageCode: " + targetLanguageCode);
             console.log("sourceLanguageCode: " + sourceLanguageCode);
 
-            this.postData(`http://localhost:8080/api/v1/translate/json/${sourceLanguageCode}/${targetLanguageCode}`, {text: this.textInput.current.value})
+            this.postData(`http://165.22.69.146:8080/api/v1/translate/json/${sourceLanguageCode}/${targetLanguageCode}`, {text: this.textInput.current.value})
                 .then(data => {
                     this.setState({
                         isLoaded: true,
