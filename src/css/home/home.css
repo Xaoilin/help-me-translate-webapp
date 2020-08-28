@@ -1,0 +1,23 @@
+#translated_text_area {
+    /*direction: rtl;*/
+}
+
+.border-grey {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+#transparent-button {
+    background-color: transparent;
+    color: blue;
+    border: none;
+}
+
+#change-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../assets/icons/change-icon.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
