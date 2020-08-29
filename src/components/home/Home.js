@@ -9,8 +9,6 @@ import Button from "react-bootstrap/Button";
 import '../../css/home/home.css';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-import Image from "react-bootstrap/Image";
-import Icon from "../../assets/icons/change-icon.png";
 
 class Home extends React.Component {
 
@@ -56,28 +54,39 @@ class Home extends React.Component {
         const {error, isLoaded, response, sourceLanguageSelected, targetLanguageSelected} = this.state;
 
         let languageMap = new Map();
+        let apiServerIp = "165.22.69.146";
+        let localhost = "localhost";
 
         languageMap.set("Arabic", "ar");
         languageMap.set("English", "en");
 
         let rowSize = "30";
+        let newLine2 = "\r\n";
 
         const handleSubmit = () => {
-            console.log("textToTranslate: " + this.textInput.current.value);
             let targetLanguageCode = languageMap.get(this.state.targetLanguageSelected);
             let sourceLanguageCode = languageMap.get(this.state.sourceLanguageSelected);
-            console.log("targetLanguageCode: " + targetLanguageCode);
-            console.log("sourceLanguageCode: " + sourceLanguageCode);
 
-            this.postData(`http://165.22.69.146:8080/api/v1/translate/json/${sourceLanguageCode}/${targetLanguageCode}`, {text: this.textInput.current.value})
+            this.postData(`http://${apiServerIp}:8080/api/v1/translate/json/${sourceLanguageCode}/${targetLanguageCode}`, {text: this.textInput.current.value})
                 .then(data => {
                     this.setState({
                         isLoaded: true,
                         response: data
                     });
                     console.log(data); // JSON data parsed by `data.json()` call
-                    console.log("sbimtted" + this.state.response.translatedText);
-                    document.getElementById("translated_text_area").innerText = this.state.response.translatedText;
+
+                    let translatedText = this.state.response.translatedText;
+
+                    let split = translatedText.split(/\r?\n/);
+                    let joined = "";
+
+                    for(let i = 0; i < split.length; i++) {
+                        joined += split[i] + newLine2;
+                    }
+
+                    translatedText = joined;
+
+                    document.getElementById("translated_text_area").value = translatedText;
                     document.getElementById("translated_text_area").style.direction = this.state.response.direction;
                 });
 
@@ -108,7 +117,6 @@ class Home extends React.Component {
             this.setState({sourceLanguageSelected: this.state.targetLanguageSelected});
             this.setState({targetLanguageSelected: temp});
         }
-
 
         return (
             <>
@@ -149,7 +157,7 @@ class Home extends React.Component {
                                                  rows={rowSize}
                                                  aria-label="With textarea"
                                                  ref={this.textInput}
-                                                 placeholder="Type in your text here"
+                                                 placeholder='Type in your text here'
                                         // onChange={() => this.handleChange()} // useful for the future
                                     />
 
@@ -159,7 +167,6 @@ class Home extends React.Component {
                                                  aria-label="With textarea"
                                                  placeholder="Translation will appear here"
                                     />
-
                                 </InputGroup>
                                 <Button variant="outline-success" onClick={handleSubmit}>Submit For
                                     Translation</Button>
