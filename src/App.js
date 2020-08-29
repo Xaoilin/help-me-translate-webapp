@@ -8,6 +8,7 @@ import {
 import About from "./components/about/About";
 import Home from "./components/home/Home";
 import HMTNavbar from "./components/navbar/Navbar";
+import MarkupTranslation from "./components/translation/MarkupTranslation";
 
 function App() {
     return (
@@ -19,6 +20,9 @@ function App() {
             <Switch>
                 <Route path="/about">
                     <About/>
+                </Route>
+                <Route path="/markup-translation">
+                    <MarkupTranslation/>
                 </Route>
                 <Route path="/">
                     <Home/>

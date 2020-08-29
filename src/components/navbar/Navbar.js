@@ -20,13 +20,9 @@ export default class HMTNavbar extends React.Component {
                         <Nav.Link>
                             <Link to="/about">About</Link>
                         </Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider/>
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link>
+                            <Link to="/markup-translation">Markup Translation</Link>
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
