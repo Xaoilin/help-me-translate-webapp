@@ -89,6 +89,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 * git clone git@github.com:Xaoilin/help-me-translate-webapp.git
 * cd help-me-translate-webapp
 
+* npm install -g create-react-app
 * npm run build
 * npm install pm2 -g
 * pm2 start npm -- start
