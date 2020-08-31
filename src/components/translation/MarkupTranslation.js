@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import HmtEditor from "../markup/HmtEditor";
 import Button from "react-bootstrap/Button";
 import Http from "../../js/http/http";
-import {LOCALHOST} from "../../js/constants/url_constants";
+import {API_URL, LOCALHOST} from "../../js/constants/url_constants";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import {SUPPORTED_LANGUAGES} from "../../js/domain/supported_languages";
@@ -39,7 +39,7 @@ export default class MarkupTranslation extends React.Component {
             let targetLanguageCode = SUPPORTED_LANGUAGES.get(this.state.targetLanguageSelected);
             let sourceLanguageCode = SUPPORTED_LANGUAGES.get(this.state.sourceLanguageSelected);
 
-            Http.postData(`http://${LOCALHOST}:8080/api/v1/translate/json/${sourceLanguageCode}/${targetLanguageCode}`, {text: this.state.sourceText})
+            Http.postData(`http://${API_URL}:8080/api/v1/translate/json/${sourceLanguageCode}/${targetLanguageCode}`, {text: this.state.sourceText})
                 .then(data => {
                     this.setState({
                         isLoaded: true,
