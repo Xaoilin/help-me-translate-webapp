@@ -90,8 +90,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 * cd help-me-translate-webapp
 
 * npm install -g create-react-app
-* npm run build
+* npm install
 * npm install pm2 -g
+* npm run build
 * pm2 start npm -- start
 * pm2 logs
 * pm2 ps
