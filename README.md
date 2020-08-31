@@ -66,3 +66,20 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+# Deployment on Ubuntu
+sudo apt update
+sudo apt install vim
+sudo apt install git-all -y
+sudo apt install nodejs
+sudo apt install npm -y
+npm install -g create-react-app
+npm run build
+npm install pm2 -g
+pm2 start npm -- start
+pm2 logs
+pm2 ps
+pm2 stop 0
+
+May have to expose port 3000 https://www.digitalocean.com/community/tutorials/ufw-essentials-common-firewall-rules-and-commands
+
