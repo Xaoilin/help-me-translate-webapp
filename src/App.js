@@ -12,6 +12,7 @@ import MarkupTranslation from "./components/translation/MarkupTranslation";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import AuthService from "./services/auth_service";
+import SavedData from "./components/saved/SavedData";
 
 class App extends React.Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class App extends React.Component {
 
         if (user) {
             this.setState({
-                currentUser: AuthService.getCurrentUser(),
+                currentUser: user,
                 // showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
                 // showAdminBoard: user.roles.includes("ROLE_ADMIN")
             });
@@ -50,7 +51,12 @@ class App extends React.Component {
                     <Route exact path="/about" component={About}/>
                     <Route exact path="/register" component={Register}/>
                     <Route exact path="/login" component={Login}/>
-                    <Route path="/markup-translation" component={MarkupTranslation}/>
+                    <Route path="/markup-translation">
+                        <MarkupTranslation currentUser={currentUser} />
+                    </Route>
+                    <Route path="/saved-edits">
+                        <SavedData currentUser={currentUser}/>
+                    </Route>
                     <Route exact path={["/", "/home"]} component={Home}/>
                 </Switch>
             </Router>

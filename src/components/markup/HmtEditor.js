@@ -14,7 +14,7 @@ export default class HmtEditor extends React.Component {
 
     handleEditorChange(content, editor) {
         this.setState({ content });
-        this.props.onSubmit(content);
+        this.props.onChange(content);
         console.log("content: " + content);
     }
 

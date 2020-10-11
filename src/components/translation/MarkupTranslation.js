@@ -12,26 +12,39 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import {SUPPORTED_LANGUAGES} from "../../js/domain/supported_languages";
 import '../../css/translation/markup.css';
-export default class MarkupTranslation extends React.Component {
+import axios from "axios";
+import AuthService from "../../services/auth_service";
+import {withRouter} from "react-router-dom";
+
+class MarkupTranslation extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
-            response: {
-                translatedText: "",
-                direction: ""
-            },
+            translatedText: "",
             sourceLanguageSelected: "English",
             targetLanguageSelected: "Arabic",
-            sourceText: ""
+            sourceText: "",
+            savedResponse: {
+                id: null,
+                sourceLanguage: null,
+                targetLanguage: null,
+                sourceText: null,
+                targetText: null
+            }
         };
     }
 
     handleSourceText = (text) => {
         this.setState({sourceText: text});
         console.log("sourceText is: " + this.state.sourceText);
+    }
+
+    handleTargetText = (text) => {
+        this.setState({translatedText: text});
+        console.log("translatedText is: " + this.state.translatedText);
     }
 
     render() {
@@ -43,7 +56,7 @@ export default class MarkupTranslation extends React.Component {
                 .then(data => {
                     this.setState({
                         isLoaded: true,
-                        response: data
+                        translatedText: data.translatedText
                     });
                     console.log(data); // JSON data parsed by `data.json()` call
                 });
@@ -76,8 +89,43 @@ export default class MarkupTranslation extends React.Component {
             this.setState({targetLanguageSelected: temp});
         }
 
+        const loadSavedData = () => {
+            const query = new URLSearchParams(this.props.location.search);
+            const id = query.get('id');
+
+            if (id !== null && !this.state.isLoaded) {
+                console.log("loading saved data");
+                axios.get(`http://${LOCALHOST}:8080/api/v1/data/translations/${this.props.currentUser.id}/${id}`, {
+                    headers: {'Authorization': `Bearer ${this.props.currentUser.accessToken}`}
+                })
+                    .then(data => {
+                        this.setState({
+                            isLoaded: true,
+                            savedResponse: data.data
+                        });
+                        console.log('data' + JSON.stringify(data.data));
+
+                        this.setState({
+                            sourceLanguageSelected: this.state.savedResponse.sourceLanguage,
+                            targetLanguageSelected: this.state.savedResponse.targetLanguage,
+                            sourceText: this.state.savedResponse.sourceText,
+                            translatedText: this.state.savedResponse.targetText
+                        })
+                    })
+                    .catch(error => {
+                        if (error.toString().includes('401')) {
+                            AuthService.logout();
+                            window.location.reload();
+                        }
+                    });
+            }
+        }
+
         return (
             <>
+                {
+                    this.props.currentUser !== undefined && loadSavedData()
+                }
                 <Container fluid id="markup-container">
                     <Row>
                         <Col>
@@ -111,11 +159,12 @@ export default class MarkupTranslation extends React.Component {
                                     className="d-flex flex-row justify-content-between border-grey border-0">
                                     <HmtEditor type="tinymce-source"
                                                initialValue="Initial content"
-                                               onSubmit={this.handleSourceText}/>
+                                               value={this.state.sourceText}
+                                               onChange={this.handleSourceText}/>
                                     <HmtEditor type="tinymce-target"
-                                               value={this.state.response.translatedText}
+                                               value={this.state.translatedText}
                                                initialValue="Translated content"
-                                               onSubmit={this.handleSourceText}/>
+                                               onChange={this.handleTargetText}/>
                                 </InputGroup>
                                 <InputGroup className="d-flex flex-row justify-content-center mt-3">
                                     <Button variant="outline-success" onClick={handleSubmit}>Submit For
@@ -129,3 +178,5 @@ export default class MarkupTranslation extends React.Component {
         );
     }
 }
+
+export default withRouter(MarkupTranslation)
