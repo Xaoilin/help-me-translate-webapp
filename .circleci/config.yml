@@ -10,6 +10,18 @@ jobs:
     steps:
       - checkout
       - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "./deploy.sh"
+  push:
+    jobs:
+      - react/install
+      - react/eslint:
+          requires:
+            - react/install
+      - react/test:
+          requires:
+            - react/install
+      - react/coverage:
+          requires:
+            - react/install
 
 workflows:
   version: 2
@@ -23,15 +35,3 @@ workflows:
                 - master
           requires:
             - push
-  push:
-    jobs:
-      - react/install
-      - react/eslint:
-          requires:
-            - react/install
-      - react/test:
-          requires:
-            - react/install
-      - react/coverage:
-          requires:
-            - react/install
