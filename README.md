@@ -69,9 +69,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 # Deployment on Ubuntu
 * sudo apt update
-* sudo apt install vim
+* sudo apt install vim -y
 * sudo apt install git-all -y
-* sudo apt install nodejs
+* sudo apt install nodejs -y
 * sudo apt install npm -y
 
 * sudo ssh-keygen
