@@ -2,6 +2,17 @@ orbs:
   react: 'thefrontside/react@0.2.0'
 version: 2.1
 workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy-prod:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
   push:
     jobs:
       - react/install
@@ -14,3 +25,9 @@ workflows:
       - react/coverage:
           requires:
             - react/install
+      - deploy-prod:
+          docker:
+            - image: circleci/node:7.10
+          steps:
+            - checkout
+            - run: ssh -oStrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "git clone git@github.com:Xaoilin/help-me-translate-webapp.git"
