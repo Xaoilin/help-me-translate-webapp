@@ -1,0 +1,35 @@
+orbs:
+  react: 'thefrontside/react@0.2.0'
+version: 2.1
+
+# Define the jobs we want to run for this project
+jobs:
+  pull-and-build:
+    docker:
+      - image: arvindr226/alpine-ssh
+    steps:
+      - checkout
+      - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "./deploy.sh"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - pull-and-build:
+          filters:
+            branches:
+              only:
+                - master
+
+  push:
+    jobs:
+      - react/install
+      - react/eslint:
+          requires:
+            - react/install
+      - react/test:
+          requires:
+            - react/install
+      - react/coverage:
+          requires:
+            - react/install
