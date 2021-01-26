@@ -10,6 +10,18 @@ jobs:
     steps:
       - checkout
       - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "./deploy.sh"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - pull-and-build:
+          filters:
+            branches:
+              only:
+                - master
+
   push:
     jobs:
       - react/install
@@ -22,15 +34,3 @@ jobs:
       - react/coverage:
           requires:
             - react/install
-
-workflows:
-  version: 2
-  build-project:
-    jobs:
-      - pull-and-build:
-          filters:
-            branches:
-              only:
-                - master
-          requires:
-            - push
