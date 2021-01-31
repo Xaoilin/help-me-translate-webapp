@@ -8,6 +8,9 @@ jobs:
     docker:
       - image: arvindr226/alpine-ssh
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "c8:d1:32:47:a7:13:6f:63:ba:4e:5c:3e:14:50:5a:77"
       - checkout
       - run: ssh -oStrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_react_webapp.sh"
 
